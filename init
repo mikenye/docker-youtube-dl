@@ -1,0 +1,10 @@
+#!/bin/bash
+groupadd -g $PGID dockeruser
+useradd -u $PUID -g $PGID -d /home/dockeruser dockeruser
+chown $PUID:$PGID /home/dockeruser
+chown $PUID:$PGID `which youtube-dl`
+chmod u+s,g+s `which youtube-dl`
+chown root:root /root/.netrc
+echo "$@"
+youtube-dl $@
+chmod a+x,a-r /init
