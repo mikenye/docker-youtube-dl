@@ -1,19 +1,43 @@
-FROM alpine:3.9
+FROM alpine:3.9 as builder_pandoc
+RUN echo "http://dl-cdn.alpinelinux.org/alpine/v3.9/community" >> /etc/apk/repositories && \
+    apk update && \
+    apk add cabal \ 
+            zlib-dev \
+            wget \
+            ghc \
+            musl-dev && \
+    cabal update && \
+    cabal install --upgrade-dependencies --enable-per-component -j --force-reinstalls pandoc
+
+FROM alpine:3.9 as builder_ytdl
+COPY --from=builder_pandoc /root/.cabal /root/.cabal
 RUN apk update && \
     apk add ffmpeg \
             rtmpdump \
             mplayer \
             mpv \
             python3 \
-            gnupg && \
+            git \
+            make \
+            zip && \
     ln -s /usr/bin/python3 /usr/bin/python && \
-    wget https://yt-dl.org/downloads/latest/youtube-dl -O /usr/local/bin/youtube-dl && \
-    chmod a+rx /usr/local/bin/youtube-dl && \
-    wget https://yt-dl.org/downloads/latest/youtube-dl.sig -O youtube-dl.sig && \
-    gpg --receive-keys "7D33 D762 FD6C 3513 0481 347F DB4B 54CB A482 6A18" && \
-    gpg --receive-keys "ED7F 5BF4 6B3B BED8 1C87 368E 2C39 3E0F 18A9 236D" && \
-    gpg --verify youtube-dl.sig /usr/local/bin/youtube-dl && \
-    apk del gnupg && \
+    ln -s /root/.cabal/bin/pandoc /usr/local/bin/pandoc && \
+    git clone https://github.com/ytdl-org/youtube-dl.git && \
+    cd /youtube-dl && \
+    make -j && \
+    make install
+
+FROM alpine:3.9 as final
+COPY --from=builder_ytdl /usr/local/bin/youtube-dl /usr/local/bin/youtube-dl
+COPY --from=builder_ytdl /usr/local/man/man1/youtube-dl.1 /usr/local/man/man1/youtube-dl.1
+RUN apk update && \
+    apk add ffmpeg \
+            rtmpdump \
+            mplayer \
+            mpv \
+            python3 && \
+    ln -s /usr/bin/python3 /usr/bin/python && \
+    youtube-dl --version && \
     rm -rf /var/cache/apk/*
 
 COPY init /init
