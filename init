@@ -1,6 +1,6 @@
-#!/bin/bash
-groupadd -g $PGID dockeruser
-useradd -u $PUID -g $PGID -d /home/dockeruser dockeruser
+#!/bin/sh
+addgroup -g $PGID dockeruser
+adduser -D -u $PUID -G dockeruser -h /home/dockeruser dockeruser
 chown $PUID:$PGID /home/dockeruser
 chown $PUID:$PGID `which youtube-dl`
 chmod u+s,g+s `which youtube-dl`

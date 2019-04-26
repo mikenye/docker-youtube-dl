@@ -1,29 +1,22 @@
-FROM ubuntu:xenial
-
-RUN apt-get update && \
-    apt-get install -y libav-tools ffmpeg rtmpdump mplayer mpv git-sh locales && \
-    rm -rf /var/lib/apt/lists/* && \
-    mkdir -p /home/dockeruser/youtube-dl && \
-    git clone --progress https://github.com/rg3/youtube-dl.git /home/dockeruser/youtube-dl/ && \
-    cd /home/dockeruser/youtube-dl && \
-    python setup.py install && \
-    locale-gen en_US.utf8 && \
-    update-locale LANG=en_US.utf8 && \
-    sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
-    locale-gen && \
-    rm -rf /tmp/* && \
-    rm -rf /var/tmp/*
-    
-ENV LANG en_US.UTF-8  
-ENV LANGUAGE en_US:en  
-ENV LC_ALL en_US.UTF-8     
+FROM alpine:3.9
+RUN apk update && \
+    apk add ffmpeg \
+            rtmpdump \
+            mplayer \
+            mpv \
+            python3 \
+            gnupg && \
+    ln -s /usr/bin/python3 /usr/bin/python && \
+    wget https://yt-dl.org/downloads/latest/youtube-dl -O /usr/local/bin/youtube-dl && \
+    chmod a+rx /usr/local/bin/youtube-dl && \
+    wget https://yt-dl.org/downloads/latest/youtube-dl.sig -O youtube-dl.sig && \
+    gpg --receive-keys "7D33 D762 FD6C 3513 0481 347F DB4B 54CB A482 6A18" && \
+    gpg --receive-keys "ED7F 5BF4 6B3B BED8 1C87 368E 2C39 3E0F 18A9 236D" && \
+    gpg --verify youtube-dl.sig /usr/local/bin/youtube-dl && \
+    apk del gnupg && \
+    rm -rf /var/cache/apk/*
 
 COPY init /init
-
-RUN rm -rf /tmp/*
-RUN rm -rf /var/tmp/*
-
-# entrypoint
 WORKDIR /home/dockeruser
 ENTRYPOINT ["/init"]
 
