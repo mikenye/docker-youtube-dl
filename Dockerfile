@@ -1,6 +1,5 @@
 FROM alpine:3.9 as builder_pandoc
-RUN echo "http://dl-cdn.alpinelinux.org/alpine/v3.9/community" >> /etc/apk/repositories && \
-    apk update && \
+RUN apk update && \
     apk add cabal \ 
             zlib-dev \
             wget \
