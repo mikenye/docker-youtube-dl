@@ -1,10 +1,17 @@
-#!/bin/sh
-addgroup -g $PGID dockeruser
-adduser -D -u $PUID -G dockeruser -h /home/dockeruser dockeruser
-chown $PUID:$PGID /home/dockeruser
-chown $PUID:$PGID `which youtube-dl`
-chmod u+s,g+s `which youtube-dl`
-chown root:root /root/.netrc
-echo "$@"
-youtube-dl $@
-chmod a+x,a-r /init
+#!/bin/bash
+
+export YOUTUBEDLARGS=$@
+
+YOUTUBEDLPGID=${PGID:-1000}
+YOUTUBEDLPUID=${PUID:-1000}
+
+# Create dockeruser user/group
+addgroup -g $YOUTUBEDLPGID dockeruser
+adduser -D -u $YOUTUBEDLPUID -G dockeruser -h /home/dockeruser dockeruser
+chown $YOUTUBEDLPUID:$YOUTUBEDLPGID /home/dockeruser
+export HOME=/home/dockeruser
+
+# Run youtube-dl with remainder of command line arguments
+su -m dockeruser <<'EOF'
+youtube-dl $YOUTUBEDLARGS
+EOF
