@@ -1,7 +1,7 @@
 #!/bin/bash -x
 
 # Build "latest"
-docker build . -t mikenye/youtube-dl:latest 
+docker build --no-cache . -t mikenye/youtube-dl:latest 
 build_exit=$?
 
 
@@ -10,7 +10,7 @@ build_exit=$?
 n=0
 until [ $n -ge 5 ]
 do
-    build_version=$(docker run --rm -ti mikenye/youtube-dl --version) 
+    build_version=$(docker run --rm mikenye/youtube-dl --version) 
     if [ $? -eq 0 ]; then
         build_version=$(echo $build_version | sed 's/\r$//')
         break
