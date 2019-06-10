@@ -1,7 +1,6 @@
-#!/bin/bash
+#!/bin/bash -x
 
-export YOUTUBEDLARGS=$@
-
+# Set UID/PID of user that youtube-dl will be run as
 YOUTUBEDLPGID=${PGID:-1000}
 YOUTUBEDLPUID=${PUID:-1000}
 
@@ -9,9 +8,10 @@ YOUTUBEDLPUID=${PUID:-1000}
 addgroup -g $YOUTUBEDLPGID dockeruser
 adduser -D -u $YOUTUBEDLPUID -G dockeruser -h /home/dockeruser dockeruser
 chown $YOUTUBEDLPUID:$YOUTUBEDLPGID /home/dockeruser
+chown $YOUTUBEDLPUID:$YOUTUBEDLPGID /usr/local/bin/youtube-dl
+chmod u+s /usr/local/bin/youtube-dl
 export HOME=/home/dockeruser
 
 # Run youtube-dl with remainder of command line arguments
-su -m dockeruser <<'EOF'
-youtube-dl $YOUTUBEDLARGS
-EOF
+su-exec dockeruser:dockeruser /usr/local/bin/youtube-dl "$@"
+

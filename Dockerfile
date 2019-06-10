@@ -42,7 +42,8 @@ RUN apk update && \
             mplayer \
             mpv \
             python3 \
-            bash && \
+            bash \
+            su-exec && \
     ln -s /usr/bin/python3 /usr/bin/python && \
     youtube-dl --version && \
     rm -rf /var/cache/apk/* /tmp/*
