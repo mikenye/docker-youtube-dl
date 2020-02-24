@@ -1,7 +1,7 @@
 #!/bin/bash -x
 
 # Build "latest"
-docker build --no-cache . -t mikenye/youtube-dl:latest 
+docker build . -t mikenye/youtube-dl:latest 
 build_exit=$?
 
 

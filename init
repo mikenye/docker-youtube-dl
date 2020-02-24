@@ -5,13 +5,14 @@ YOUTUBEDLPGID=${PGID:-1000}
 YOUTUBEDLPUID=${PUID:-1000}
 
 # Create dockeruser user/group
-addgroup -g $YOUTUBEDLPGID dockeruser
-adduser -D -u $YOUTUBEDLPUID -G dockeruser -h /home/dockeruser dockeruser
+addgroup --quiet --gid $YOUTUBEDLPGID dockeruser
+mkdir -p /home/dockeruser
 chown $YOUTUBEDLPUID:$YOUTUBEDLPGID /home/dockeruser
+adduser --quiet --system --disabled-password --uid $YOUTUBEDLPUID --gid $YOUTUBEDLPGID --home /home/dockeruser dockeruser
 chown $YOUTUBEDLPUID:$YOUTUBEDLPGID /usr/local/bin/youtube-dl
 chmod u+s /usr/local/bin/youtube-dl
 export HOME=/home/dockeruser
 
 # Run youtube-dl with remainder of command line arguments
-su-exec dockeruser:dockeruser /usr/local/bin/youtube-dl "$@"
+setpriv --reuid dockeruser --regid dockeruser --keep-groups /usr/local/bin/youtube-dl "$@"
 
