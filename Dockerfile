@@ -1,7 +1,6 @@
 # Builder container for youtube-dl
 # (so build environment isn't in final container, to save space)
 FROM debian:stable-slim as builder_ytdl
-#COPY --from=builder_pandoc /root/.cabal /root/.cabal
 RUN apt-get update -y && \
     apt-get install --no-install-recommends -y \
             ffmpeg \
