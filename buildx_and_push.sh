@@ -6,6 +6,7 @@ IMAGE=mikenye/youtube-dl
 # Build latest
 docker buildx build -t ${IMAGE}:${VERSION} --progress=plain --compress --push --platform linux/amd64,linux/arm/v7,linux/arm64 . || exit 1
 docker pull mikenye/youtube-dl:latest
+sleep 15
 # Get version of latest container
 # Repeat as running straight after the build can give a 'bad interpreter: Text file busy' error
 n=0
@@ -25,7 +26,5 @@ if [ $n -ge 5 ]; then
 fi
 
 # If the build was successful, then we can tag with current version
-if [ $build_exit -eq 0 ]; then
-    docker buildx build -t ${IMAGE}:${$build_version} --progress=plain --compress --push --platform linux/amd64,linux/arm/v7,linux/arm64 . || exit 1
-fi
+docker buildx build -t ${IMAGE}:${build_version} --progress=plain --compress --push --platform linux/amd64,linux/arm/v7,linux/arm64 . || exit 1
 

@@ -1,6 +1,12 @@
 ## youtube-dl
 youtube-dl - download videos from youtube.com or other video platforms
 
+## Multi Architecture Support
+This image should pull and run on the following architectures:
+ * `linux/amd64` (`x86_64`): Built on Linux x86-64
+ * `linux/arm/v7` (`armv7l`, `armhf`, `arm32v7`): Built on Odroid HC2 running ARMv7 32-bit
+ * `linux/arm64` (`aarch64`, `arm64v8`): Built on a Raspberry Pi 4 Model B running ARMv8 64-bit
+
 ## Quick Start
 **NOTE**: The docker command provided in this quick start is given as an example, and parameters should be adjusted to your needs.
 
