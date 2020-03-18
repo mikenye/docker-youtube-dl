@@ -17,7 +17,7 @@ alias youtube-dl='docker run \
                   --rm -i \
                   -e PGID=$(id -g) \
                   -e PUID=$(id -u) \
-                  -v $(pwd):/workdir:rw \
+                  -v "$(pwd)":/workdir:rw \
                   mikenye/youtube-dl'
 ```
 
@@ -40,7 +40,7 @@ docker run \
 ```
 
 Where:
-* `/path/to/downloaded/videos` is where youtube-dl will download videos to (use `$(pwd)` to downloade to current working directory.
+* `/path/to/downloaded/videos` is where youtube-dl will download videos to (use `"$(pwd)"` to downloade to current working directory.
 * `/path/to/youtube-dl.conf` is the path to your youtube-dl.conf file.
 
 ## Environment Variables
@@ -97,15 +97,15 @@ In order to perform a scheduled download of youtube subscriptions, it is recomme
 
 ```
 docker run \
-    --rm 
-    -i 
-    --name youtube-dl-cron 
-    -e PGID=GID 
+    --rm
+    -i
+    --name youtube-dl-cron
+    -e PGID=GID
     -e PUID=UID
-    --cpus CPUS 
-    -v /path/to/netrc:/home/dockeruser/.netrc:ro 
+    --cpus CPUS
+    -v /path/to/netrc:/home/dockeruser/.netrc:ro
     -v /path/to/youtube/subscriptions:/workdir:rw
-    -v /path/to/youtube-dl.conf:/etc/youtube-dl.conf:ro 
+    -v /path/to/youtube-dl.conf:/etc/youtube-dl.conf:ro
     mikenye/youtube-dl \
     :ytsubscriptions \
     --dateafter now-5days \
@@ -176,7 +176,7 @@ docker pull mikenye/youtube-dl
 To get shell access to a running container, execute the following command:
 
 ```
-docker exec -ti CONTAINER sh 
+docker exec -ti CONTAINER sh
 ```
 
 Where `CONTAINER` is the name of the running container.
