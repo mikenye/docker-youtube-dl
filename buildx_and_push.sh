@@ -3,6 +3,10 @@
 VERSION=latest
 IMAGE=mikenye/youtube-dl
 
+docker context use x86_64
+export DOCKER_CLI_EXPERIMENTAL="enabled"
+docker buildx use homecluster
+
 # Build latest
 docker buildx build -t ${IMAGE}:${VERSION} --progress=plain --compress --push --platform linux/amd64,linux/arm/v7,linux/arm64 . || exit 1
 docker pull mikenye/youtube-dl:latest
@@ -27,4 +31,3 @@ fi
 
 # If the build was successful, then we can tag with current version
 docker buildx build -t ${IMAGE}:${build_version} --progress=plain --compress --push --platform linux/amd64,linux/arm/v7,linux/arm64 . || exit 1
-
