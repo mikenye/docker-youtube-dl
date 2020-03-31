@@ -25,6 +25,7 @@ RUN apt-get update -y && \
         pandoc \
         && \
     apt-get autoremove -y && \
+    apt-get clean -y && \
     youtube-dl --version && \
     rm -rf /var/lib/apt/lists/* /tmp/* /src
 
