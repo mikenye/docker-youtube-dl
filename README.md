@@ -1,18 +1,22 @@
-## youtube-dl
-youtube-dl - download videos from youtube.com or other video platforms
+# mikenye/youtube-dl
+
+`youtube-dl` - download videos from youtube.com or other video platforms
 
 ## Multi Architecture Support
+
 This image should pull and run on the following architectures:
- * `linux/amd64` (`x86_64`): Built on Linux x86-64
- * `linux/arm/v7` (`armv7l`, `armhf`, `arm32v7`): Built on Odroid HC2 running ARMv7 32-bit
- * `linux/arm64` (`aarch64`, `arm64v8`): Built on a Raspberry Pi 4 Model B running ARMv8 64-bit
+
+* `linux/amd64` (`x86_64`): Built on Linux x86-64
+* `linux/arm/v7` (`armv7l`, `armhf`, `arm32v7`): Built on Odroid HC2 running ARMv7 32-bit
+* `linux/arm64` (`aarch64`, `arm64v8`): Built on a Raspberry Pi 4 Model B running ARMv8 64-bit
 
 ## Quick Start
+
 **NOTE**: The docker command provided in this quick start is given as an example, and parameters should be adjusted to your needs.
 
 It is suggested to configure an alias as follows (and place into your `.bash_aliases` file):
 
-```
+```shell
 alias youtube-dl='docker run \
                   --rm -i \
                   -e PGID=$(id -g) \
@@ -29,7 +33,7 @@ To prevent having to specify many command line arguments every time you run yout
 
 In order for the docker container to use the configuration file, it must be mapped through to the container.
 
-```
+```shell
 docker run \
     --rm -i \
     -e PGID=$(id -g) \
@@ -40,6 +44,7 @@ docker run \
 ```
 
 Where:
+
 * `/path/to/downloaded/videos` is where youtube-dl will download videos to (use `"$(pwd)"` to downloade to current working directory.
 * `/path/to/youtube-dl.conf` is the path to your youtube-dl.conf file.
 
@@ -58,11 +63,12 @@ If you want to download videos that require authentication (or your youtube subs
 
 You can create a file with the following syntax:
 
-```
+```text
 machine youtube login USERNAME password PASSWORD
 ```
 
 Where:
+
 * `USERNAME` is replaced with your youtube account username
 * `PASSWORD` is replaced with your youtube account password
 
@@ -70,7 +76,7 @@ You may need to disable some account security settings (such as '2-Step Verifica
 
 This file can then be mapped through to the container as a .netrc file, eg:
 
-```
+```shell
 docker run \
     --rm -i \
     -e PGID=$(id -g) \
@@ -95,7 +101,7 @@ There are no data volumes explicity set in the Dockerfile, however:
 
 In order to perform a scheduled download of youtube subscriptions, it is recommended to use the following command to be executed via cron on a regular basis (eg: daily).
 
-```
+```shell
 docker run \
     --rm
     -i
@@ -116,6 +122,7 @@ docker run \
 ```
 
 Where:
+
 * `GID`: a group ID to run as (if in a normal user's crontab, use `$(id -g)`
 * `UID`: a user ID to run as (if in a normal user's crontab, use `$(id -u)`
 * `CPUS`: the number of CPUs to constrain the docker container to. This may be required to prevent impacting system performance if transcoding takes place. If not, the `--cpus` argument can be completely omitted.
@@ -126,6 +133,7 @@ Where:
 * `/path/to/logs/youtube-dl.log`: the path to the application log, if desired
 
 Notes:
+
 * `--rm` is given so the container is destroyed when execution is finished. This will prevent your drive from slowly filling up with exited containers.
 * `--name youtube-dl-cron` is given so that multiple instances are not started by cron. In the event the previous container is still running, docker will simply exit with an error that the container name is already taken.
 * `--dateafter now-5days` is given to limit youtube-dl to only download recent videos. Feel free to adjust as required.
@@ -133,7 +141,7 @@ Notes:
 
 In the example above, a configuration file is used. This allows us to easily add commands to select a specific quality, and name the videos with a specific format. For example, to download the videos into a format recognised by Plex, you could use the following:
 
-```
+```shell
 -v
 --ignore-errors
 --no-overwrites
@@ -151,6 +159,7 @@ In the example above, a configuration file is used. This allows us to easily add
 ```
 
 The above example config file will:
+
 * Ignore errors
 * Will not overwrite existing videos
 * Will continue downloading in the event a download is interrupted
@@ -167,15 +176,15 @@ No port mappings are required for this container.
 
 If the system on which the container runs doesn't provide a way to easily update the Docker image (eg: watchtower), simply pull the latest version of the container:
 
-```
+```shell
 docker pull mikenye/youtube-dl
-````
+```
 
 ## Shell access
 
 To get shell access to a running container, execute the following command:
 
-```
+```shell
 docker exec -ti CONTAINER sh
 ```
 
@@ -183,7 +192,7 @@ Where `CONTAINER` is the name of the running container.
 
 To start a container with a shell (instead of `youtube-dl`), execute the following command:
 
-```
+```shell
 docker run --rm -ti --entrypoint=/bin/sh mikenye/youtube-dl
 ```
 
