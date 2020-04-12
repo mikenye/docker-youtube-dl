@@ -1,6 +1,5 @@
-# Builder container for youtube-dl
-# (so build environment isn't in final container, to save space)
 FROM debian:stable-slim
+
 RUN set -x && \
     apt-get update -y && \
     apt-get install --no-install-recommends -y \
