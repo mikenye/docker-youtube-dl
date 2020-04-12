@@ -2,6 +2,22 @@
 
 `youtube-dl` - download videos from youtube.com or other video platforms
 
+## Table of Contents
+
+* [mikenye/youtube-dl](#mikenyeyoutube-dl)
+  * [Table of Contents](#table-of-contents)
+  * [Multi Architecture Support](#multi-architecture-support)
+  * [Quick Start](#quick-start)
+  * [Using a config file](#using-a-config-file)
+  * [Authentication using `.netrc`](#authentication-using-netrc)
+  * [Data Volumes](#data-volumes)
+  * [Environment Variables](#environment-variables)
+  * [Ports](#ports)
+  * [Scheduled download of youtube subscriptions](#scheduled-download-of-youtube-subscriptions)
+  * [Docker Image Update](#docker-image-update)
+  * [Shell access](#shell-access)
+  * [Support or Contact](#support-or-contact)
+
 ## Multi Architecture Support
 
 This image should pull and run on the following architectures:
@@ -48,18 +64,9 @@ Where:
 * `/path/to/downloaded/videos` is where youtube-dl will download videos to (use `"$(pwd)"` to downloade to current working directory.
 * `/path/to/youtube-dl.conf` is the path to your youtube-dl.conf file.
 
-## Environment Variables
+## Authentication using `.netrc`
 
-To customize some properties of the container, the following environment variables can be passed via the `-e` parameter (one for each variable). This paramater has the format `<VARIABLE_NAME>=<VALUE>`.
-
-| Variable | Description | Recommended Setting |
-|----------|-------------|---------------------|
-| PGID     | The Group ID that the `youtube-dl` process will run as | `$(id -u)` for the current user's GID |
-| PUID     | The User ID that the `youtube-dl` process will run as | `$(id -g)` for the current user's UID |
-
-## Authentication using .netrc
-
-If you want to download videos that require authentication (or your youtube subscriptions for example, see below), it is recommended to use a .netrc file.
+If you want to download videos that require authentication (or your youtube subscriptions for example, see below), it is recommended to use a `.netrc` file.
 
 You can create a file with the following syntax:
 
@@ -74,7 +81,7 @@ Where:
 
 You may need to disable some account security settings (such as '2-Step Verification' and 'Use your phone to sign in', so it is suggested to make a long, complex password (eg: 32 random characters).
 
-This file can then be mapped through to the container as a .netrc file, eg:
+This file can then be mapped through to the container as a `.netrc` file, eg:
 
 ```shell
 docker run \
@@ -96,6 +103,19 @@ There are no data volumes explicity set in the Dockerfile, however:
 | `/workdir` | rw | The `youtube-dl` process is executed with a working directory of `/workdir`. Thus, unless you override the output directory with the `--output` argument on the command line or via a configuration file, videos will end up in this directory. |
 | `/etc/youtube-dl.conf` | ro | The `youtube-dl` process will look in this location for a configuration file by default. |
 | `/home/dockeruser/.netrc` | ro | The `youtube-dl` process will look in this location for a .netrc file (if `--netrc` is specified on the command line or via a configuration file). |
+
+## Environment Variables
+
+To customize some properties of the container, the following environment variables can be passed via the `-e` parameter (one for each variable). This paramater has the format `<VARIABLE_NAME>=<VALUE>`.
+
+| Variable | Description | Recommended Setting |
+|----------|-------------|---------------------|
+| PGID     | The Group ID that the `youtube-dl` process will run as | `$(id -u)` for the current user's GID |
+| PUID     | The User ID that the `youtube-dl` process will run as | `$(id -g)` for the current user's UID |
+
+## Ports
+
+No port mappings are required for this container.
 
 ## Scheduled download of youtube subscriptions
 
@@ -167,10 +187,6 @@ The above example config file will:
 * Will download oldest videos first, so videos can be sorted by "date added" in Plex
 * Will download the best quality up to a maximum of 1080p (prevent 4K downloads)
 * Will format videos with a separate folder for each uploader.
-
-## Ports
-
-No port mappings are required for this container.
 
 ## Docker Image Update
 
