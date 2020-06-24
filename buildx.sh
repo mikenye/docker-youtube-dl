@@ -8,7 +8,7 @@ export DOCKER_CLI_EXPERIMENTAL="enabled"
 docker buildx use homecluster
 
 # Build latest
-docker buildx build -t ${IMAGE}:${VERSION} --progress=plain --compress --push --platform linux/amd64,linux/arm/v7,linux/arm64 . || exit 1
+docker buildx build -t ${IMAGE}:${VERSION} --no-cache --progress=plain --compress --push --platform linux/amd64,linux/arm/v7,linux/arm64 . || exit 1
 docker pull mikenye/youtube-dl:latest
 sleep 15
 # Get version of latest container
