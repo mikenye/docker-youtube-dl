@@ -17,6 +17,7 @@ n=0
 until [ $n -ge 5 ]
 do
     if build_version=$(docker run --rm mikenye/youtube-dl:latest --version || exit 1); then
+        # shellcheck disable=SC2001
         build_version=$(echo "$build_version" | sed 's/\r$//')
         break
     fi
