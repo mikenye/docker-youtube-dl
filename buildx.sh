@@ -16,8 +16,7 @@ sleep 15
 n=0
 until [ $n -ge 5 ]
 do
-    build_version=$(docker run --rm mikenye/youtube-dl:latest --version || exit 1)
-    if [ $? -eq 0 ]; then
+    if build_version=$(docker run --rm mikenye/youtube-dl:latest --version || exit 1); then
         build_version=$(echo "$build_version" | sed 's/\r$//')
         break
     fi
