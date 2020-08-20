@@ -1,5 +1,9 @@
 FROM debian:stable-slim
 
+ENV LC_ALL=C.UTF-8 \
+    LANG=C.UTF-8 \
+    LANGUAGE=en_US:en
+
 RUN set -x && \
     apt-get update -y && \
     apt-get install --no-install-recommends -y \
@@ -7,6 +11,8 @@ RUN set -x && \
         ca-certificates \
         ffmpeg \
         git \
+        locales \
+        locales-all \
         make \
         mplayer \
         mpv \
