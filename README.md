@@ -2,7 +2,6 @@
 
 ![Linting](https://github.com/mikenye/docker-youtube-dl/workflows/Linting/badge.svg) ![Docker](https://github.com/mikenye/docker-youtube-dl/workflows/Docker/badge.svg)
 
-
 `youtube-dl` - download videos from youtube.com or other video platforms
 
 ## Table of Contents
