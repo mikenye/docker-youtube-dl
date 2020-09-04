@@ -43,6 +43,8 @@ alias youtube-dl='docker run \
                   mikenye/youtube-dl'
 ```
 
+**HANDY HINT:** After updating your `.bash_aliases` file, run `source ~/.bash_aliases` to make your changes live!
+
 When run (eg: `youtube-dl https://www.youtube.com/watch?v=dQw4w9WgXcQ`), it will download the video to the current working directory, and take any command line arguments that the normal youtube-dl binary would.
 
 ## Using a config file
