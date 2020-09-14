@@ -17,8 +17,8 @@ fi
 # Create user/group
 mkdir -p /home/dockeruser
 addgroup --quiet --gid "$YOUTUBEDLPGID" dockeruser
-adduser --quiet --system --disabled-password --uid "$YOUTUBEDLPUID" --gid "$YOUTUBEDLPGID" --home /home/dockeruser dockeruser
 chown "$YOUTUBEDLPUID":"$YOUTUBEDLPGID" /home/dockeruser
+adduser --quiet --system --disabled-password --uid "$YOUTUBEDLPUID" --gid "$YOUTUBEDLPGID" --home /home/dockeruser dockeruser
 chown "$YOUTUBEDLPUID":"$YOUTUBEDLPGID" /usr/local/bin/youtube-dl
 chmod u+s /usr/local/bin/youtube-dl
 HOME=/home/dockeruser
