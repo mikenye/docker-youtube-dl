@@ -4,15 +4,25 @@
 YOUTUBEDLPGID=${PGID:-1000}
 YOUTUBEDLPUID=${PUID:-1000}
 
-# Create dockeruser user/group
-addgroup --quiet --gid "$YOUTUBEDLPGID" dockeruser
+# Check to see if group/user already exist, if so, delete
+EXISTINGGROUPNAME=$(getent group "$YOUTUBEDLPGID" | cut -d ':' -f 1)
+EXISTINGUSERNAME=$(getent passwd "$YOUTUBEDLPUID" | cut -d ':' -f 1)
+if [[ -n "$EXISTINGGROUPNAME" ]]; then
+    groupdel "$EXISTINGGROUPNAME"
+fi
+if [[ -n "$EXISTINGUSERNAME" ]]; then
+    userdel "$EXISTINGUSERNAME"
+fi
+
+# Create user/group
 mkdir -p /home/dockeruser
-chown "$YOUTUBEDLPUID":"$YOUTUBEDLPGID" /home/dockeruser
+addgroup --quiet --gid "$YOUTUBEDLPGID" dockeruser
 adduser --quiet --system --disabled-password --uid "$YOUTUBEDLPUID" --gid "$YOUTUBEDLPGID" --home /home/dockeruser dockeruser
+chown "$YOUTUBEDLPUID":"$YOUTUBEDLPGID" /home/dockeruser
 chown "$YOUTUBEDLPUID":"$YOUTUBEDLPGID" /usr/local/bin/youtube-dl
 chmod u+s /usr/local/bin/youtube-dl
-export HOME=/home/dockeruser
+HOME=/home/dockeruser
+export HOME
 
 # Run youtube-dl with remainder of command line arguments
 setpriv --reuid dockeruser --regid dockeruser --keep-groups /usr/local/bin/youtube-dl "$@"
-
