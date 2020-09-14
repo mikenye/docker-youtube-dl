@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 
 # Set UID/PID of user that youtube-dl will be run as
 YOUTUBEDLPGID=${PGID:-1000}
@@ -8,10 +8,10 @@ YOUTUBEDLPUID=${PUID:-1000}
 EXISTINGGROUPNAME=$(getent group "$YOUTUBEDLPGID" | cut -d ':' -f 1)
 EXISTINGUSERNAME=$(getent passwd "$YOUTUBEDLPUID" | cut -d ':' -f 1)
 if [[ -n "$EXISTINGGROUPNAME" ]]; then
-    groupdel --force "$EXISTINGGROUPNAME"
+    groupdel -f "$EXISTINGGROUPNAME"
 fi
 if [[ -n "$EXISTINGUSERNAME" ]]; then
-    userdel --force "$EXISTINGUSERNAME"
+    userdel -f "$EXISTINGUSERNAME"
 fi
 
 # Create user/group
