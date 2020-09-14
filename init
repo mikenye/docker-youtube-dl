@@ -8,10 +8,10 @@ YOUTUBEDLPUID=${PUID:-1000}
 EXISTINGGROUPNAME=$(getent group "$YOUTUBEDLPGID" | cut -d ':' -f 1)
 EXISTINGUSERNAME=$(getent passwd "$YOUTUBEDLPUID" | cut -d ':' -f 1)
 if [[ -n "$EXISTINGGROUPNAME" ]]; then
-    groupdel "$EXISTINGGROUPNAME"
+    groupdel --force "$EXISTINGGROUPNAME"
 fi
 if [[ -n "$EXISTINGUSERNAME" ]]; then
-    userdel "$EXISTINGUSERNAME"
+    userdel --force "$EXISTINGUSERNAME"
 fi
 
 # Create user/group
