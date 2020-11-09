@@ -21,8 +21,10 @@ RUN set -x && \
         rtmpdump \
         zip \
         && \
-    git clone https://github.com/ytdl-org/youtube-dl.git /src/youtube-dl && \
-    cd /src/youtube-dl && \
+    git clone https://github.com/blackjack4494/yt-dlc.git /src/youtube-dlc && \
+    cd /src/youtube-dlc && \
+    BRANCH_YTLDC=$(git tag --sort='-creatordate' | head -1) && \
+    git checkout "${BRANCH_YTLDC}" && \
     make && \
     make install && \
     apt-get remove -y \
@@ -32,7 +34,7 @@ RUN set -x && \
         && \
     apt-get autoremove -y && \
     apt-get clean -y && \
-    youtube-dl --version && \
+    youtube-dlc --version && \
     rm -rf /var/lib/apt/lists/* /tmp/* /src
 
 # Copy init script, set workdir & entrypoint

@@ -19,10 +19,10 @@ mkdir -p /home/dockeruser
 addgroup --quiet --gid "$YOUTUBEDLPGID" dockeruser
 chown "$YOUTUBEDLPUID":"$YOUTUBEDLPGID" /home/dockeruser
 adduser --quiet --system --disabled-password --uid "$YOUTUBEDLPUID" --gid "$YOUTUBEDLPGID" --home /home/dockeruser dockeruser
-chown "$YOUTUBEDLPUID":"$YOUTUBEDLPGID" /usr/local/bin/youtube-dl
-chmod u+s /usr/local/bin/youtube-dl
+chown "$YOUTUBEDLPUID":"$YOUTUBEDLPGID" /usr/local/bin/youtube-dlc
+chmod u+s /usr/local/bin/youtube-dlc
 HOME=/home/dockeruser
 export HOME
 
-# Run youtube-dl with remainder of command line arguments
-setpriv --reuid dockeruser --regid dockeruser --keep-groups /usr/local/bin/youtube-dl "$@"
+# Run youtube-dlc with remainder of command line arguments
+setpriv --reuid dockeruser --regid dockeruser --keep-groups /usr/local/bin/youtube-dlc "$@"

@@ -30,4 +30,4 @@ if [ "$n" -ge 5 ]; then
 fi
 
 # If the build was successful, then we can tag with current version
-docker buildx build -t "${IMAGE}:${build_version}" --progress=plain --compress --push --platform linux/amd64,linux/arm/v7,linux/arm64 . || exit 1
+docker buildx build -t "${IMAGE}:${build_version}_ytdlc" --progress=plain --compress --push --platform linux/amd64,linux/arm/v7,linux/arm64 . || exit 1
