@@ -4,6 +4,8 @@ ENV LC_ALL=C.UTF-8 \
     LANG=C.UTF-8 \
     LANGUAGE=en_US:en
 
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
 RUN set -x && \
     apt-get update -y && \
     apt-get install --no-install-recommends -y \
@@ -22,11 +24,12 @@ RUN set -x && \
         zip \
         && \
     git clone https://github.com/blackjack4494/yt-dlc.git /src/youtube-dlc && \
-    cd /src/youtube-dlc && \
+    pushd /src/youtube-dlc && \
     BRANCH_YTLDC=$(git tag --sort='-creatordate' | head -1) && \
     git checkout "${BRANCH_YTLDC}" && \
     make && \
     make install && \
+    popd && \
     apt-get remove -y \
         git \
         make \
