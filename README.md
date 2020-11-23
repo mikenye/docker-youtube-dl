@@ -15,6 +15,7 @@
   * [Quick Start](#quick-start)
   * [Using a config file](#using-a-config-file)
   * [Authentication using `.netrc`](#authentication-using-netrc)
+  * [Configuration Files](#configuration-files)
   * [Data Volumes](#data-volumes)
   * [Environment Variables](#environment-variables)
   * [Ports](#ports)
@@ -101,15 +102,23 @@ docker run \
     mikenye/youtube-dl
 ```
 
+## Configuration Files
+
+| Container Path | Permissions | Description |
+|----------------|-------------|-------------|
+| `/config/youtube-dl.conf` | `ro` | If this file exists at container startup, it is symlinked to `/etc/youtube-dl.conf` at container startup. The `youtube-dl` process will look in this location for a configuration file by default. |
+| `/config/.netrc` | `ro` | If this file exists at container startup, it is symlinked to `/home/dockeruser/.netrc` at container startup. The `youtube-dl` process will look in this location for a .netrc file (if `--netrc` is specified on the command line or via a configuration file). |
+| `/config/.cache` | `rw` | If this directory exists at container startup, it is symlinked to `/home/dockeruser/.cache/youtube-dl` at container startup. The `youtube-dl` process automatically uses this path for caching. |
+
+You can place any other configuration files within `/config`, and then specify them on the command line, eg: `--batch-file /config/batch-file.conf`.
+
 ## Data Volumes
 
 There are no data volumes explicity set in the Dockerfile, however:
 
 | Container Path | Permissions | Description |
 |----------------|-------------|-------------|
-| `/workdir` | rw | The `youtube-dl` process is executed with a working directory of `/workdir`. Thus, unless you override the output directory with the `--output` argument on the command line or via a configuration file, videos will end up in this directory. |
-| `/etc/youtube-dl.conf` | ro | The `youtube-dl` process will look in this location for a configuration file by default. |
-| `/home/dockeruser/.netrc` | ro | The `youtube-dl` process will look in this location for a .netrc file (if `--netrc` is specified on the command line or via a configuration file). |
+| `/workdir` | rw | The `youtube-dl` process is executed with a working directory of `/workdir`. Thus, unless you override the output directory with the `--output` argument on the command line or via a configuration file, videos will end up in this directory. 
 
 ## Environment Variables
 
