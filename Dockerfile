@@ -35,7 +35,7 @@ RUN set -x && \
     # Install ytdl
     git clone https://github.com/ytdl-org/youtube-dl.git /src/youtube-dl && \
     pushd /src/youtube-dl && \
-    BRANCH_YTDL=$(git tag --sort='-creatordate' | head -1) && \
+    BRANCH_YTDL=$(git tag --sort='creatordate' | tail -1) && \
     git checkout "${BRANCH_YTDL}" && \
     make && \
     make install && \
@@ -47,7 +47,7 @@ RUN set -x && \
     youtube-dl --version && \
     rm -rf /var/lib/apt/lists/* /tmp/* /src
 
-# Copy init script, set workdir & entrypoint
+# # Copy init script, set workdir & entrypoint
 COPY init /init
 WORKDIR /workdir
 ENTRYPOINT ["/init"]
