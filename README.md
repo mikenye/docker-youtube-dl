@@ -118,7 +118,7 @@ There are no data volumes explicity set in the Dockerfile, however:
 
 | Container Path | Permissions | Description |
 |----------------|-------------|-------------|
-| `/workdir` | rw | The `youtube-dl` process is executed with a working directory of `/workdir`. Thus, unless you override the output directory with the `--output` argument on the command line or via a configuration file, videos will end up in this directory. 
+| `/workdir` | rw | The `youtube-dl` process is executed with a working directory of `/workdir`. Thus, unless you override the output directory with the `--output` argument on the command line or via a configuration file, videos will end up in this directory.
 
 ## Environment Variables
 
