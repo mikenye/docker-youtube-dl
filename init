@@ -1,5 +1,41 @@
 #!/bin/bash
 
+# Create dockeruser homedir
+mkdir -p /home/dockeruser
+
+# Create symlinks for files/dirs under /config
+
+# if /config/youtube-dl.conf exists, symlink to /etc/youtube-dl.conf
+if [[ -e "/config/youtube-dl.conf" ]]; then
+    # if the symlink already exists, remove it
+    if [[ -L "/etc/youtube-dl.conf" ]]; then
+        rm -v "/etc/youtube-dl.conf"
+    fi
+    # create symlink
+    ln -vs "/config/youtube-dl.conf" "/etc/youtube-dl.conf" > /dev/null 2>&1 || true
+fi
+
+# if /config/.netrc exists, symlink to /home/dockeruser/.netrc
+if [[ -e "/config/.netrc" ]]; then
+    # if the symlink already exists, remove it
+    if [[ -L "/home/dockeruser/.netrc" ]]; then
+        rm -v "/home/dockeruser/.netrc"
+    fi
+    # create symlink
+    ln -vs "/config/.netrc" "/home/dockeruser/.netrc" > /dev/null 2>&1 || true
+fi
+
+# if /config/.cache exists, symlink to /home/dockeruser/.cache
+if [[ -d "/config/.cache" ]]; then
+    # if the symlink already exists, remove it
+    if [[ -L "/home/dockeruser/.cache/youtube-dl" && -d "/home/dockeruser/.cache/youtube-dl" ]]; then
+        rm -v "/home/dockeruser/.cache/youtube-dl"
+    fi
+    # create symlink
+    mkdir -p "/home/dockeruser/.cache"
+    ln -vs /config/.cache "/home/dockeruser/.cache/youtube-dl"
+fi
+
 # Set UID/PID of user that youtube-dl will be run as
 YOUTUBEDLPGID=${PGID:-1000}
 YOUTUBEDLPUID=${PUID:-1000}
@@ -15,11 +51,10 @@ if [[ -n "$EXISTINGUSERNAME" ]]; then
 fi
 
 # Create user/group
-mkdir -p /home/dockeruser
 addgroup --quiet --gid "$YOUTUBEDLPGID" dockeruser
-chown "$YOUTUBEDLPUID":"$YOUTUBEDLPGID" /home/dockeruser
+chown -R "$YOUTUBEDLPUID":"$YOUTUBEDLPGID" /home/dockeruser
 adduser --quiet --system --disabled-password --uid "$YOUTUBEDLPUID" --gid "$YOUTUBEDLPGID" --home /home/dockeruser dockeruser
-chown "$YOUTUBEDLPUID":"$YOUTUBEDLPGID" /usr/local/bin/youtube-dl
+chown -R "$YOUTUBEDLPUID":"$YOUTUBEDLPGID" /usr/local/bin/youtube-dl
 chmod u+s /usr/local/bin/youtube-dl
 HOME=/home/dockeruser
 export HOME

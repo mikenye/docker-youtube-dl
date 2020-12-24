@@ -40,12 +40,14 @@ RUN set -x && \
     make && \
     make install && \
     popd && \
+    # Create /config directory
+    mkdir -p /config && \
     # Clean-up.
     apt-get remove -y ${TEMP_PACKAGES[@]} && \
     apt-get autoremove -y && \
     apt-get clean -y && \
-    youtube-dl --version && \
-    rm -rf /var/lib/apt/lists/* /tmp/* /src
+    rm -rf /var/lib/apt/lists/* /tmp/* /src && \
+    youtube-dl --version
 
 # # Copy init script, set workdir & entrypoint
 COPY init /init
