@@ -13,6 +13,7 @@
   * [Table of Contents](#table-of-contents)
   * [Multi Architecture Support](#multi-architecture-support)
   * [Quick Start](#quick-start)
+  * [Running on Unraid](#running-on-unraid)
   * [Using a config file](#using-a-config-file)
   * [Authentication using `.netrc`](#authentication-using-netrc)
   * [Data Volumes](#data-volumes)
@@ -49,6 +50,12 @@ alias yt-dl='docker run \
 **HANDY HINT:** After updating your `.bash_aliases` file, run `source ~/.bash_aliases` to make your changes live!
 
 When run (eg: `yt-dl <video_url>`), it will download the video to the current working directory, and take any command line arguments that the normal youtube-dl binary would.
+
+## Running on Unraid
+
+Unraid forum user Timmyx has written a fantastic guide to deploying this image on Unraid. The guide can be found here:
+
+<https://forums.unraid.net/topic/100256-youtube-dl-strategy/>
 
 ## Using a config file
 
