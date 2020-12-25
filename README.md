@@ -1,6 +1,9 @@
 # mikenye/youtube-dl
 
-![Linting](https://github.com/mikenye/docker-youtube-dl/workflows/Linting/badge.svg) ![Docker](https://github.com/mikenye/docker-youtube-dl/workflows/Docker/badge.svg)
+[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/mikenye/docker-youtube-dl/Deploy%20to%20Docker%20Hub)](https://github.com/mikenye/docker-youtube-dl/actions?query=workflow%3A%22Deploy+to+Docker+Hub%22)
+[![Docker Pulls](https://img.shields.io/docker/pulls/mikenye/youtube-dl.svg)](https://hub.docker.com/r/mikenye/youtube-dl)
+[![Docker Image Size (tag)](https://img.shields.io/docker/image-size/mikenye/youtube-dl/latest)](https://hub.docker.com/r/mikenye/youtube-dl)
+[![Discord](https://img.shields.io/discord/734090820684349521)](https://discord.gg/sTf9uYF)
 
 `yt-dl` - download videos many online video platforms
 
