@@ -30,11 +30,7 @@
 
 ## Multi Architecture Support
 
-This image should pull and run on the following architectures:
-
-* `linux/amd64` (`x86_64`): Built on Linux x86-64
-* `linux/arm/v7` (`armv7l`, `armhf`, `arm32v7`): Built on Odroid HC2 running ARMv7 32-bit
-* `linux/arm64` (`aarch64`, `arm64v8`): Built on a Raspberry Pi 4 Model B running ARMv8 64-bit
+This image should pull and run on the following architectures: `linux/amd64`, `linux/arm64/v8`, `linux/arm/v6`, `linux/arm/v7`, `linux/386`, `linux/ppc64le`, `linux/s390x`.
 
 ## Quick Start
 
