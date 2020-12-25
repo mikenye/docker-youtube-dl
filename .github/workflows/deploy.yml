@@ -72,7 +72,7 @@ jobs:
           context: .
           file: ./Dockerfile
           no-cache: true
-          platforms: linux/amd64,linux/arm64/v8,linux/arm/v6,linux/arm/v7,linux/386,linux/ppc64le,linux/s390x
+          platforms: linux/amd64,linux/arm64/v8,linux/arm/v6,linux/arm/v7,linux/386,linux/ppc64le
           push: ${{ env.PUSH }}
           tags: ${{ env.REPO }}/${{ env.IMAGE }}:latest
 
@@ -97,7 +97,7 @@ jobs:
           context: .
           file: ./Dockerfile
           no-cache: true
-          platforms: linux/amd64,linux/arm64/v8,linux/arm/v6,linux/arm/v7,linux/386,linux/ppc64le,linux/s390x
+          platforms: linux/amd64,linux/arm64/v8,linux/arm/v6,linux/arm/v7,linux/386,linux/ppc64le
           push: ${{ env.PUSH }}
           tags: ${{ env.REPO }}/${{ env.IMAGE }}:${{ env.VERSION_TAG }}
 
@@ -114,7 +114,7 @@ jobs:
           context: .
           file: ./Dockerfile.nohealthcheck
           no-cache: true
-          platforms: linux/amd64,linux/arm64/v8,linux/arm/v6,linux/arm/v7,linux/386,linux/ppc64le,linux/s390x
+          platforms: linux/amd64,linux/arm64/v8,linux/arm/v6,linux/arm/v7,linux/386,linux/ppc64le
           push: ${{ env.PUSH }}
           tags: ${{ env.REPO }}/${{ env.IMAGE }}:latest_nohealthcheck
 
@@ -126,7 +126,7 @@ jobs:
           context: .
           file: ./Dockerfile.nohealthcheck
           no-cache: true
-          platforms: linux/amd64,linux/arm64/v8,linux/arm/v6,linux/arm/v7,linux/386,linux/ppc64le,linux/s390x
+          platforms: linux/amd64,linux/arm64/v8,linux/arm/v6,linux/arm/v7,linux/386,linux/ppc64le
           push: ${{ env.PUSH }}
           tags: ${{ env.REPO }}/${{ env.IMAGE }}:${{ env.VERSION_TAG }}_nohealthcheck
 
