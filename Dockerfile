@@ -47,7 +47,7 @@ RUN set -x && \
     apt-get autoremove -y && \
     apt-get clean -y && \
     rm -rf /var/lib/apt/lists/* /tmp/* /src && \
-    youtube-dl --version
+    youtube-dl --version > /CONTAINER_VERSION
 
 # # Copy init script, set workdir & entrypoint
 COPY init /init
