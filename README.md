@@ -1,6 +1,9 @@
 # mikenye/youtube-dl
 
-![Linting](https://github.com/mikenye/docker-youtube-dl/workflows/Linting/badge.svg) ![Docker](https://github.com/mikenye/docker-youtube-dl/workflows/Docker/badge.svg)
+[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/mikenye/docker-youtube-dl/Deploy%20to%20Docker%20Hub)](https://github.com/mikenye/docker-youtube-dl/actions?query=workflow%3A%22Deploy+to+Docker+Hub%22)
+[![Docker Pulls](https://img.shields.io/docker/pulls/mikenye/youtube-dl.svg)](https://hub.docker.com/r/mikenye/youtube-dl)
+[![Docker Image Size (tag)](https://img.shields.io/docker/image-size/mikenye/youtube-dl/latest)](https://hub.docker.com/r/mikenye/youtube-dl)
+[![Discord](https://img.shields.io/discord/734090820684349521)](https://discord.gg/sTf9uYF)
 
 `yt-dl` - download videos many online video platforms
 
@@ -27,11 +30,7 @@
 
 ## Multi Architecture Support
 
-This image should pull and run on the following architectures:
-
-* `linux/amd64` (`x86_64`): Built on Linux x86-64
-* `linux/arm/v7` (`armv7l`, `armhf`, `arm32v7`): Built on Odroid HC2 running ARMv7 32-bit
-* `linux/arm64` (`aarch64`, `arm64v8`): Built on a Raspberry Pi 4 Model B running ARMv8 64-bit
+This image should pull and run on the following architectures: `linux/amd64`, `linux/arm64/v8`, `linux/arm/v6`, `linux/arm/v7`, `linux/386`, `linux/ppc64le`, `linux/s390x`.
 
 ## Quick Start
 
