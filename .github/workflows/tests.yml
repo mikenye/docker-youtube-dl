@@ -61,3 +61,77 @@ jobs:
           no-cache: true
           platforms: ${{ matrix.docker-platform }}
           push: false
+
+  download:
+    name: Test downloading a video
+    runs-on: ubuntu-latest
+    steps:
+
+      # Check out our code
+      -
+        name: Checkout
+        uses: actions/checkout@v2
+
+      # Hit an issue where arm builds would fail with cURL errors regarding intermediary certificates when downloading from github (ie: deploy-s6-overlay).
+      # After many hours of troubleshooting, the workaround is to pre-load the image's rootfs with the CA certificates from the runner.
+      # This problem may go away in future.
+      - 
+        name: Copy CA Certificates from GitHub Runner to Image rootfs
+        run: |
+          ls -la /etc/ssl/certs/
+          mkdir -p ./rootfs/etc/ssl/certs
+          mkdir -p ./rootfs/usr/share/ca-certificates/mozilla
+          cp --no-dereference /etc/ssl/certs/*.crt ./rootfs/etc/ssl/certs
+          cp --no-dereference /etc/ssl/certs/*.pem ./rootfs/etc/ssl/certs
+          cp --no-dereference /usr/share/ca-certificates/mozilla/*.crt ./rootfs/usr/share/ca-certificates/mozilla
+
+      # Set up QEMU for multi-arch builds
+      -
+        name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+
+      # Set up buildx for multi platform builds
+      -
+        name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v1
+
+      # Test container build for all supported platforms (defined above)
+      -
+        name: Test Build ${{ matrix.docker-platform }}
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          tags: youtube-dl:testing
+          file: ./Dockerfile
+          no-cache: true
+          platforms: ${{ matrix.docker-platform }}
+          push: false
+          load: true
+
+      # Test downloading a video
+      - 
+        name: Test downloading a video 
+        run: |
+          sudo mkdir -p /tmp/ytdltest
+          sudo chmod a+w /tmp/ytdltest
+          docker run --rm -v /tmp/ytdltest:/workdir youtube-dl:testing "https://www.youtube.com/watch?v=C0DPdy98e4c"
+          sudo rm -rf /tmp/ytdltest
+
+      # Test embedding subtitles
+      - 
+        name: Test embedding subtitles 
+        run: |
+          sudo mkdir -p /tmp/ytdltest
+          sudo chmod a+w /tmp/ytdltest
+          docker run --rm -v /tmp/ytdltest:/workdir youtube-dl:testing --write-sub --embed-subs --sub-format en "https://www.youtube.com/watch?v=qfJthDvcZ08"
+          sudo rm -rf /tmp/ytdltest
+      
+      # Test post processing
+      - 
+        name: Test post processing
+        run: |
+          sudo mkdir -p /tmp/ytdltest
+          sudo chmod a+w /tmp/ytdltest
+          docker run --rm -v /tmp/ytdltest:/workdir youtube-dl:testing --audio-format wav --recode-video ogg "https://www.youtube.com/watch?v=C0DPdy98e4c"
+          sudo rm -rf /tmp/ytdltest
