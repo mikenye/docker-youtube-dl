@@ -21,7 +21,6 @@ RUN set -x && \
     KEPT_PACKAGES+=(locales-all) && \
     KEPT_PACKAGES+=(mplayer) && \
     KEPT_PACKAGES+=(mpv) && \
-    # KEPT_PACKAGES+=(pandoc) && \
     KEPT_PACKAGES+=(python3) && \
     KEPT_PACKAGES+=(rtmpdump) && \
     KEPT_PACKAGES+=(zip) && \
