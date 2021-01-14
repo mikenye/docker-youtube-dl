@@ -63,7 +63,7 @@ jobs:
           push: false
 
   download:
-    name: Test downloading a video
+    name: Functionality Testing
     runs-on: ubuntu-latest
     steps:
 
