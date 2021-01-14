@@ -60,4 +60,4 @@ HOME=/home/dockeruser
 export HOME
 
 # Run youtube-dlc with remainder of command line arguments
-setpriv --reuid dockeruser --regid dockeruser --keep-groups /usr/local/bin/youtube-dl "$@"
+setpriv --reuid dockeruser --regid dockeruser --keep-groups python3 /usr/local/bin/youtube-dl "$@"
