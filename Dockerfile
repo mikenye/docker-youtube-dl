@@ -24,6 +24,7 @@ RUN set -x && \
     KEPT_PACKAGES+=(python3) && \
     KEPT_PACKAGES+=(rtmpdump) && \
     KEPT_PACKAGES+=(zip) && \
+	KEPT_PACKAGES+=(atomicparsley) && \
     # Install packages
     apt-get update -y && \
     apt-get install -y --no-install-recommends \
