@@ -1,4 +1,4 @@
-FROM debian:stable-slim
+FROM debian:sid-slim
 
 ENV LC_ALL=C.UTF-8 \
     LANG=C.UTF-8 \
@@ -19,12 +19,13 @@ RUN set -x && \
     KEPT_PACKAGES+=(ffmpeg) && \
     KEPT_PACKAGES+=(locales) && \
     KEPT_PACKAGES+=(locales-all) && \
-    KEPT_PACKAGES+=(mplayer) && \
     KEPT_PACKAGES+=(mpv) && \
     KEPT_PACKAGES+=(python3) && \
+    KEPT_PACKAGES+=(python-is-python3) && \
     KEPT_PACKAGES+=(rtmpdump) && \
     KEPT_PACKAGES+=(zip) && \
-	KEPT_PACKAGES+=(atomicparsley) && \
+    KEPT_PACKAGES+=(atomicparsley) && \
+    KEPT_PACKAGES+=(aria2) && \
     # Install packages
     apt-get update -y && \
     apt-get install -y --no-install-recommends \
