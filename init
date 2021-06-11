@@ -64,5 +64,10 @@ chmod u+s /usr/local/bin/youtube-dl
 HOME=/home/dockeruser
 export HOME
 
+# Set UMASK if required
+if [[ -n "$UMASK" ]]; then
+    umask "$UMASK"
+fi
+
 # Run youtube-dlc with remainder of command line arguments
 setpriv --reuid dockeruser --regid dockeruser --keep-groups python3 /usr/local/bin/youtube-dl "$@"
