@@ -132,8 +132,9 @@ To customize some properties of the container, the following environment variabl
 
 | Variable | Description | Recommended Setting |
 |----------|-------------|---------------------|
-| PGID     | The Group ID that the `youtube-dl` process will run as | `$(id -u)` for the current user's GID |
-| PUID     | The User ID that the `youtube-dl` process will run as | `$(id -g)` for the current user's UID |
+| `PGID`     | The Group ID that the `youtube-dl` process will run as | `$(id -u)` for the current user's GID |
+| `PUID`     | The User ID that the `youtube-dl` process will run as | `$(id -g)` for the current user's UID |
+| `UPDATE_YOUTUBE_DL` | Set to any value and `youtube-dl -U` will be run on container start |
 
 ## Ports
 
