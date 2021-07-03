@@ -22,6 +22,7 @@ RUN set -x && \
     KEPT_PACKAGES+=(mpv) && \
     KEPT_PACKAGES+=(python3) && \
     KEPT_PACKAGES+=(python-is-python3) && \
+    TEMP_PACKAGES+=(python3-pip) && \
     KEPT_PACKAGES+=(rtmpdump) && \
     KEPT_PACKAGES+=(zip) && \
     KEPT_PACKAGES+=(atomicparsley) && \
