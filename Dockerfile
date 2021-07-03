@@ -15,13 +15,16 @@ RUN set -x && \
     TEMP_PACKAGES+=(pandoc) && \
     # Packages kept in the image
     KEPT_PACKAGES+=(bash) && \
+    TEMP_PACKAGES+=(build-essential) && \
     KEPT_PACKAGES+=(ca-certificates) && \
     KEPT_PACKAGES+=(ffmpeg) && \
     KEPT_PACKAGES+=(locales) && \
     KEPT_PACKAGES+=(locales-all) && \
     KEPT_PACKAGES+=(mpv) && \
     KEPT_PACKAGES+=(python3) && \
+    TEMP_PACKAGES+=(python3-dev) && \
     KEPT_PACKAGES+=(python-is-python3) && \
+    TEMP_PACKAGES+=(python3-pip) && \
     KEPT_PACKAGES+=(rtmpdump) && \
     KEPT_PACKAGES+=(zip) && \
     KEPT_PACKAGES+=(atomicparsley) && \
@@ -33,6 +36,8 @@ RUN set -x && \
         ${TEMP_PACKAGES[@]} \
         && \
     git config --global advice.detachedHead false && \
+    # Install required python modules
+    python3 -m pip install --no-cache-dir pyxattr && \
     # Install ytdl
     git clone https://github.com/ytdl-org/youtube-dl.git /src/youtube-dl && \
     pushd /src/youtube-dl && \
