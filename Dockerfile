@@ -36,7 +36,7 @@ RUN set -x && \
         && \
     git config --global advice.detachedHead false && \
     # Install required python modules
-    python3 -m pip pyxattr && \
+    python3 -m pip install pyxattr && \
     # Install ytdl
     git clone https://github.com/ytdl-org/youtube-dl.git /src/youtube-dl && \
     pushd /src/youtube-dl && \
