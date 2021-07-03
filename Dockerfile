@@ -15,6 +15,7 @@ RUN set -x && \
     TEMP_PACKAGES+=(pandoc) && \
     # Packages kept in the image
     KEPT_PACKAGES+=(bash) && \
+    TEMP_PACKAGES+=(build-essential) && \
     KEPT_PACKAGES+=(ca-certificates) && \
     KEPT_PACKAGES+=(ffmpeg) && \
     KEPT_PACKAGES+=(locales) && \
@@ -34,6 +35,8 @@ RUN set -x && \
         ${TEMP_PACKAGES[@]} \
         && \
     git config --global advice.detachedHead false && \
+    # Install required python modules
+    python3 -m pip pyxattr && \
     # Install ytdl
     git clone https://github.com/ytdl-org/youtube-dl.git /src/youtube-dl && \
     pushd /src/youtube-dl && \
