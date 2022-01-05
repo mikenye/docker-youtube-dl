@@ -38,7 +38,7 @@ fi
 
 # if user has requested UPDATE_YOUTUBE_DL, then update youtube-dl
 if [[ -n "$UPDATE_YOUTUBE_DL" ]]; then
-    youtube-dl -U
+    yt-dlp -U
 fi
 
 # Set UID/PID of user that youtube-dl will be run as
@@ -59,8 +59,8 @@ fi
 addgroup --quiet --gid "$YOUTUBEDLPGID" dockeruser
 chown -R "$YOUTUBEDLPUID":"$YOUTUBEDLPGID" /home/dockeruser
 adduser --quiet --system --disabled-password --uid "$YOUTUBEDLPUID" --gid "$YOUTUBEDLPGID" --home /home/dockeruser dockeruser
-chown -R "$YOUTUBEDLPUID":"$YOUTUBEDLPGID" /usr/local/bin/youtube-dl
-chmod u+s /usr/local/bin/youtube-dl
+chown -R "$YOUTUBEDLPUID":"$YOUTUBEDLPGID" /usr/local/bin/yt-dlp
+chmod u+s /usr/local/bin/yt-dlp
 HOME=/home/dockeruser
 export HOME
 
@@ -70,4 +70,4 @@ if [[ -n "$UMASK" ]]; then
 fi
 
 # Run youtube-dlc with remainder of command line arguments
-setpriv --reuid dockeruser --regid dockeruser --keep-groups python3 /usr/local/bin/youtube-dl "$@"
+setpriv --reuid dockeruser --regid dockeruser --keep-groups python3 /usr/local/bin/yt-dlp "$@"
