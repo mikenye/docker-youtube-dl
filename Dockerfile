@@ -38,14 +38,8 @@ RUN set -x && \
     git config --global advice.detachedHead false && \
     # Install required python modules
     python3 -m pip install --no-cache-dir pyxattr && \
-    # Install ytdl
-    git clone https://github.com/ytdl-org/youtube-dl.git /src/youtube-dl && \
-    pushd /src/youtube-dl && \
-    BRANCH_YTDL=$(git tag --sort='creatordate' | tail -1) && \
-    git checkout "${BRANCH_YTDL}" && \
-    make && \
-    make install && \
-    popd && \
+    # Install yt-dlp via pip
+    python3 -m pip install --no-cache-dir --force-reinstall https://github.com/yt-dlp/yt-dlp/archive/master.zip && \
     # Create /config directory
     mkdir -p /config && \
     # Clean-up.
@@ -53,7 +47,7 @@ RUN set -x && \
     apt-get autoremove -y && \
     apt-get clean -y && \
     rm -rf /var/lib/apt/lists/* /tmp/* /src && \
-    youtube-dl --version > /CONTAINER_VERSION
+    yt-dlp --version > /CONTAINER_VERSION
 
 # # Copy init script, set workdir & entrypoint
 COPY init /init

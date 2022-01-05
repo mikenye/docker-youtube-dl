@@ -7,8 +7,7 @@
 
 `yt-dl` - download videos many online video platforms
 
-* Note: as of November 2020, this container will utilise [`yt-dlc`](https://github.com/blackjack4494/yt-dlc).
-* Note: as of 23rd November 2020, this container has reverted to [`youtube-dl`](https://github.com/ytdl-org/youtube-dl) now that the repository has been re-instated.
+* Note: As of 2022-01-05 updated to use [yt-dlp](https://github.com/yt-dlp/yt-dlp)
 
 ## Table of Contents
 
