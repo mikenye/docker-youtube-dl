@@ -38,7 +38,8 @@ fi
 
 # if user has requested UPDATE_YOUTUBE_DL, then update youtube-dl
 if [[ -n "$UPDATE_YOUTUBE_DL" ]]; then
-    yt-dlp -U
+    echo "Attempting update of youtube-dl"
+    python3 -m pip install --upgrade --no-cache-dir yt-dlp 2>&1 | grep -v WARNING
 fi
 
 # Set UID/PID of user that youtube-dl will be run as
