@@ -24,7 +24,7 @@ RUN set -x && \
     KEPT_PACKAGES+=(python3) && \
     TEMP_PACKAGES+=(python3-dev) && \
     KEPT_PACKAGES+=(python-is-python3) && \
-    TEMP_PACKAGES+=(python3-pip) && \
+    KEPT_PACKAGES+=(python3-pip) && \
     KEPT_PACKAGES+=(rtmpdump) && \
     KEPT_PACKAGES+=(zip) && \
     KEPT_PACKAGES+=(atomicparsley) && \
@@ -39,7 +39,7 @@ RUN set -x && \
     # Install required python modules
     python3 -m pip install --no-cache-dir pyxattr && \
     # Install yt-dlp via pip
-    python3 -m pip install --no-cache-dir --force-reinstall https://github.com/yt-dlp/yt-dlp/archive/master.zip && \
+    python3 -m pip install --no-cache-dir --force-reinstall yt-dlp && \
     # Create /config directory
     mkdir -p /config && \
     # Clean-up.
