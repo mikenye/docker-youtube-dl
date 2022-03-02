@@ -25,7 +25,7 @@ jobs:
       # Check out our code
       -
         name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       # Hit an issue where arm builds would fail with cURL errors regarding intermediary certificates when downloading from github (ie: deploy-s6-overlay).
       # After many hours of troubleshooting, the workaround is to pre-load the image's rootfs with the CA certificates from the runner.
@@ -70,7 +70,7 @@ jobs:
       # Check out our code
       -
         name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       # Hit an issue where arm builds would fail with cURL errors regarding intermediary certificates when downloading from github (ie: deploy-s6-overlay).
       # After many hours of troubleshooting, the workaround is to pre-load the image's rootfs with the CA certificates from the runner.
