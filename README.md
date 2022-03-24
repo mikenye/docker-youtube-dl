@@ -43,7 +43,7 @@ alias yt-dl='docker run \
                   -e PGID=$(id -g) \
                   -e PUID=$(id -u) \
                   -v "$(pwd)":/workdir:rw \
-                  mikenye/youtube-dl'
+                  ghcr.io/mikenye/docker-youtube-dl:latest'
 ```
 
 **HANDY HINT:** After updating your `.bash_aliases` file, run `source ~/.bash_aliases` to make your changes live!
@@ -69,7 +69,7 @@ docker run \
     -e PUID=$(id -u) \
     -v /path/to/downloaded/videos:/workdir:rw \
     -v /path/to/youtube-dl.conf:/etc/youtube-dl.conf:ro \
-    mikenye/youtube-dl
+    ghcr.io/mikenye/docker-youtube-dl:latest
 ```
 
 Where:
@@ -104,7 +104,7 @@ docker run \
     -v /path/to/downloaded/videos:/workdir:rw \
     -v /path/to/youtube-dl.conf:/etc/youtube-dl.conf:ro \
     -v /path/to/netrc_file:/home/dockeruser/.netrc:ro
-    mikenye/youtube-dl
+    ghcr.io/mikenye/docker-youtube-dl:latest
 ```
 
 ## Configuration Files
@@ -155,7 +155,7 @@ docker run \
     -v /path/to/netrc:/home/dockeruser/.netrc:ro
     -v /path/to/youtube/subscriptions:/workdir:rw
     -v /path/to/youtube-dl.conf:/etc/youtube-dl.conf:ro
-    mikenye/youtube-dl \
+    ghcr.io/mikenye/docker-youtube-dl:latest \
     :ytsubscriptions \
     --dateafter now-5days \
     --download-archive /workdir/.youtube-dl-archive \
@@ -216,7 +216,7 @@ The above example config file will:
 If the system on which the container runs doesn't provide a way to easily update the Docker image (eg: watchtower), simply pull the latest version of the container:
 
 ```shell
-docker pull mikenye/youtube-dl
+docker pull ghcr.io/mikenye/docker-youtube-dl:latest
 ```
 
 ## Shell access
@@ -232,7 +232,7 @@ Where `CONTAINER` is the name of the running container.
 To start a container with a shell (instead of `youtube-dl`), execute the following command:
 
 ```shell
-docker run --rm -ti --entrypoint=/bin/sh mikenye/youtube-dl
+docker run --rm -ti --entrypoint=/bin/sh ghcr.io/mikenye/docker-youtube-dl:latest
 ```
 
 ## Support or Contact

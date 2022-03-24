@@ -7,60 +7,12 @@ on:
       - main
 
 jobs:
-  buildx:
-    name: Test image build
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        docker-platform:
-          - linux/amd64
-          - linux/arm64/v8
-          - linux/arm/v6
-          - linux/arm/v7
-          - linux/386
-          - linux/ppc64le
-          - linux/s390x
-    steps:
-
-      # Check out our code
-      -
-        name: Checkout
-        uses: actions/checkout@v3
-
-      # Hit an issue where arm builds would fail with cURL errors regarding intermediary certificates when downloading from github (ie: deploy-s6-overlay).
-      # After many hours of troubleshooting, the workaround is to pre-load the image's rootfs with the CA certificates from the runner.
-      # This problem may go away in future.
-      - 
-        name: Copy CA Certificates from GitHub Runner to Image rootfs
-        run: |
-          ls -la /etc/ssl/certs/
-          mkdir -p ./rootfs/etc/ssl/certs
-          mkdir -p ./rootfs/usr/share/ca-certificates/mozilla
-          cp --no-dereference /etc/ssl/certs/*.crt ./rootfs/etc/ssl/certs
-          cp --no-dereference /etc/ssl/certs/*.pem ./rootfs/etc/ssl/certs
-          cp --no-dereference /usr/share/ca-certificates/mozilla/*.crt ./rootfs/usr/share/ca-certificates/mozilla
-
-      # Set up QEMU for multi-arch builds
-      -
-        name: Set up QEMU
-        uses: docker/setup-qemu-action@v1
-
-      # Set up buildx for multi platform builds
-      -
-        name: Set up Docker Buildx
-        id: buildx
-        uses: docker/setup-buildx-action@v1
-
-      # Test container build for all supported platforms (defined above)
-      -
-        name: Test Build ${{ matrix.docker-platform }}
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          file: ./Dockerfile
-          no-cache: true
-          platforms: ${{ matrix.docker-platform }}
-          push: false
+  
+  test-build:
+    name: Test
+    uses: sdr-enthusiasts/common-github-workflows/.github/workflows/build_and_push_image.yml@main
+    with:
+      push_enabled: false
 
   download:
     name: Functionality Testing

@@ -1,270 +1,34 @@
-name: Deploy to Docker Hub
+---
+name: Deploy
 
 on:
-
-  # Build and deploy the image on pushes to master branch
+  workflow_dispatch:
   push:
-    branches: 
-      - master
+    branches:
       - main
 
-  # Build and deploy the image nightly (to ensure we pick up any security updates)
-  schedule:
-    - cron: "0 12 * * *"
+    # Don't trigger if it's just a documentation update
+    paths-ignore:
+      - '**.md'
+      - '**.MD'
+      - '**.yml'
+      - 'LICENSE'
+      - '.gitattributes'
+      - '.gitignore'
+      - '.dockerignore'
 
 jobs:
-  deploy_dockerhub_multiarch:
-    name: Deploy to DockerHub (Multi-Arch)
-    runs-on: ubuntu-latest
 
-    # Set job-wide environment variables
-    #  - REPO: repo name on dockerhub
-    #  - IMAGE: image name on dockerhub
-    env:
-      REPO: mikenye
-      IMAGE: youtube-dl
-      PUSH: true
-    
-    steps:
-
-      # Check out our code
-      -
-        name: Checkout
-        uses: actions/checkout@v3
-
-      # Hit an issue where arm builds would fail with cURL errors regarding intermediary certificates when downloading from github (ie: deploy-s6-overlay).
-      # After many hours of troubleshooting, the workaround is to pre-load the image's rootfs with the CA certificates from the runner.
-      # This problem may go away in future.
-      - 
-        name: Copy CA Certificates from GitHub Runner to Image rootfs
-        run: |
-          ls -la /etc/ssl/certs/
-          mkdir -p ./rootfs/etc/ssl/certs
-          mkdir -p ./rootfs/usr/share/ca-certificates/mozilla
-          cp --no-dereference /etc/ssl/certs/*.crt ./rootfs/etc/ssl/certs
-          cp --no-dereference /etc/ssl/certs/*.pem ./rootfs/etc/ssl/certs
-          cp --no-dereference /usr/share/ca-certificates/mozilla/*.crt ./rootfs/usr/share/ca-certificates/mozilla
-      
-      # Set up QEMU for multi-arch builds
-      -
-        name: Set up QEMU
-        uses: docker/setup-qemu-action@v1
-
-      # Log into docker hub (so we can push images)
-      -
-        name: Login to DockerHub
-        uses: docker/login-action@v1
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-      # Set up buildx for multi platform builds
-      -
-        name: Set up Docker Buildx
-        id: buildx
-        uses: docker/setup-buildx-action@v1
-
-      # Build "latest"
-      -
-        name: Build & Push - latest
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          file: ./Dockerfile
-          no-cache: true
-          platforms: linux/amd64,linux/arm64/v8,linux/arm/v6,linux/arm/v7,linux/386,linux/ppc64le
-          push: ${{ env.PUSH }}
-          tags: ${{ env.REPO }}/${{ env.IMAGE }}:latest
-
-      # Get version from "latest"
-      -
-        name: Get latest image version
-        run: |
-          docker pull "${{ env.REPO }}/${{ env.IMAGE }}:latest"
-          echo "VERSION_TAG=$(docker run --rm --entrypoint cat "${{ env.REPO }}/${{ env.IMAGE }}:latest" /CONTAINER_VERSION)" >> $GITHUB_ENV
-
-      # Show version from "latest"
-      -
-        name: Show latest image version
-        run: |
-          echo "${{ env.REPO }}/${{ env.IMAGE }}:latest contains version: ${{ env.VERSION_TAG }}"
-
-      # Build version specific
-      -
-        name: Build & Push - version specific
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          file: ./Dockerfile
-          no-cache: true
-          platforms: linux/amd64,linux/arm64/v8,linux/arm/v6,linux/arm/v7,linux/386,linux/ppc64le
-          push: ${{ env.PUSH }}
-          tags: ${{ env.REPO }}/${{ env.IMAGE }}:${{ env.VERSION_TAG }}
-
-      # Patch dockerfile to remove healthcheck
-      -
-        name: Patch Dockerfile to remove healthcheck
-        run: sed '/^HEALTHCHECK /d' < Dockerfile > Dockerfile.nohealthcheck
-      
-      # Build "latest_nohealthcheck"
-      -
-        name: Build & Push - latest nohealthcheck
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          file: ./Dockerfile.nohealthcheck
-          no-cache: true
-          platforms: linux/amd64,linux/arm64/v8,linux/arm/v6,linux/arm/v7,linux/386,linux/ppc64le
-          push: ${{ env.PUSH }}
-          tags: ${{ env.REPO }}/${{ env.IMAGE }}:latest_nohealthcheck
-
-      # Build version specific _nohealthcheck
-      -
-        name: Build & Push - version specific nohealthcheck
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          file: ./Dockerfile.nohealthcheck
-          no-cache: true
-          platforms: linux/amd64,linux/arm64/v8,linux/arm/v6,linux/arm/v7,linux/386,linux/ppc64le
-          push: ${{ env.PUSH }}
-          tags: ${{ env.REPO }}/${{ env.IMAGE }}:${{ env.VERSION_TAG }}_nohealthcheck
-
-  deploy_dockerhub_single_arch:
-    name: Deploy to DockerHub
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        docker-platform:
-          - linux/amd64
-          - linux/arm64/v8
-          - linux/arm/v6
-          - linux/arm/v7
-          - linux/386
-          - linux/ppc64le
-          - linux/s390x
-
-    # Set job-wide environment variables
-    #  - REPO: repo name on dockerhub
-    #  - IMAGE: image name on dockerhub
-    env:
-      REPO: mikenye
-      IMAGE: youtube-dl
-      PUSH: true
-
-    steps:
-
-      # Check out our code
-      -
-        name: Checkout
-        uses: actions/checkout@v3
-
-      # Hit an issue where arm builds would fail with cURL errors regarding intermediary certificates when downloading from github (ie: deploy-s6-overlay).
-      # After many hours of troubleshooting, the workaround is to pre-load the image's rootfs with the CA certificates from the runner.
-      # This problem may go away in future.
-      - 
-        name: Copy CA Certificates from GitHub Runner to Image rootfs
-        run: |
-          ls -la /etc/ssl/certs/
-          mkdir -p ./rootfs/etc/ssl/certs
-          mkdir -p ./rootfs/usr/share/ca-certificates/mozilla
-          cp --no-dereference /etc/ssl/certs/*.crt ./rootfs/etc/ssl/certs
-          cp --no-dereference /etc/ssl/certs/*.pem ./rootfs/etc/ssl/certs
-          cp --no-dereference /usr/share/ca-certificates/mozilla/*.crt ./rootfs/usr/share/ca-certificates/mozilla
-      
-      # Set up QEMU for multi-arch builds
-      -
-        name: Set up QEMU
-        uses: docker/setup-qemu-action@v1
-
-      # Log into docker hub (so we can push images)
-      -
-        name: Login to DockerHub
-        uses: docker/login-action@v1
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-      # Set up buildx for multi platform builds
-      -
-        name: Set up Docker Buildx
-        id: buildx
-        uses: docker/setup-buildx-action@v1
-
-      # Get archictecture suffix
-      -
-        name: Get image architecture suffix
-        run: |
-          echo "ARCH_TAG=$(echo '${{ matrix.docker-platform }}' | cut -d '/' -f2- | tr -s '/' '_')" >> $GITHUB_ENV
-      
-      # Show archictecture suffix
-      -
-        name: Show image architecture suffix
-        run: |
-          echo "Architecture suffix: ${{ env.ARCH_TAG }}"
-
-      # Build "latest"
-      -
-        name: Build & Push - latest
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          file: ./Dockerfile
-          no-cache: true
-          platforms: ${{ matrix.docker-platform }}
-          push: ${{ env.PUSH }}
-          tags: ${{ env.REPO }}/${{ env.IMAGE }}:latest_${{ env.ARCH_TAG }}
-      
-      # Get version from "latest"
-      -
-        name: Get latest image version
-        run: |
-          docker pull "${{ env.REPO }}/${{ env.IMAGE }}:latest_${{ env.ARCH_TAG }}"
-          echo "VERSION_TAG=$(docker run --rm --entrypoint cat "${{ env.REPO }}/${{ env.IMAGE }}:latest_${{ env.ARCH_TAG }}" /CONTAINER_VERSION)" >> $GITHUB_ENV
-
-      # Show version from "latest"
-      -
-        name: Show latest image version
-        run: |
-          echo "${{ env.REPO }}/${{ env.IMAGE }}:latest contains version: ${{ env.VERSION_TAG }}"
-
-      # Build version specific
-      -
-        name: Build & Push - version specific
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          file: ./Dockerfile
-          no-cache: true
-          platforms: ${{ matrix.docker-platform }}
-          push: ${{ env.PUSH }}
-          tags: ${{ env.REPO }}/${{ env.IMAGE }}:${{ env.VERSION_TAG }}_${{ env.ARCH_TAG }}
-
-      # Patch dockerfile to remove healthcheck
-      -
-        name: Patch Dockerfile to remove healthcheck
-        run: sed '/^HEALTHCHECK /d' < Dockerfile > Dockerfile.nohealthcheck
-      
-      # Build "latest_nohealthcheck"
-      -
-        name: Build & Push - latest nohealthcheck
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          file: ./Dockerfile.nohealthcheck
-          no-cache: true
-          platforms: ${{ matrix.docker-platform }}
-          push: ${{ env.PUSH }}
-          tags: ${{ env.REPO }}/${{ env.IMAGE }}:latest_nohealthcheck_${{ env.ARCH_TAG }}
-      
-      # Build version specific _nohealthcheck
-      -
-        name: Build & Push - version specific nohealthcheck
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          file: ./Dockerfile.nohealthcheck
-          no-cache: true
-          platforms: ${{ matrix.docker-platform }}
-          push: ${{ env.PUSH }}
-          tags: ${{ env.REPO }}/${{ env.IMAGE }}:${{ env.VERSION_TAG }}_nohealthcheck_${{ env.ARCH_TAG }}
+  deploy:
+    name: Deploy
+    uses: sdr-enthusiasts/common-github-workflows/.github/workflows/build_and_push_image.yml@main
+    with:
+      push_enabled: true
+      push_destinations: ghcr.io;dockerhub
+      ghcr_repo_owner: ${{ github.repository_owner }}
+      ghcr_repo: ${{ github.repository }}
+      dockerhub_profile: mikenye
+      dockerhub_repo: youtube-dl
+    secrets:
+      ghcr_token: ${{ secrets.GITHUB_TOKEN }}
+      dockerhub_token: ${{ secrets.DOCKERHUB_TOKEN }}

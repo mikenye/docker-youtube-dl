@@ -2,7 +2,7 @@ name: Cancelling Duplicates
 on:
   workflow_run:
     workflows:
-      - 'Deploy to Docker Hub'
+      - 'Deploy'
       - 'Linting'
       - 'Tests'
     types: ['requested']
