@@ -42,12 +42,13 @@ RUN set -x && \
     python3 -m pip install --no-cache-dir --force-reinstall yt-dlp && \
     # Create /config directory
     mkdir -p /config && \
-    # Clean-up.
+    # Clean-up
     apt-get remove -y ${TEMP_PACKAGES[@]} && \
     apt-get autoremove -y && \
     apt-get clean -y && \
     rm -rf /var/lib/apt/lists/* /tmp/* /src && \
-    yt-dlp --version > /CONTAINER_VERSION
+    # Document version
+    yt-dlp --version > /IMAGE_VERSION
 
 # # Copy init script, set workdir & entrypoint
 COPY init /init

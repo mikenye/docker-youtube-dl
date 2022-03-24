@@ -1,0 +1,10 @@
+version: 2
+
+updates:
+# check for updated docker image and will create pull request
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: daily
+      time: "00:00"
+      timezone: "Etc/UTC"
