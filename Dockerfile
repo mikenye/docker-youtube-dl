@@ -25,6 +25,7 @@ RUN set -x && \
     TEMP_PACKAGES+=(python3-dev) && \
     KEPT_PACKAGES+=(python-is-python3) && \
     KEPT_PACKAGES+=(python3-pip) && \
+    KEPT_PACKAGES+=(python3-pyxattr) && \
     KEPT_PACKAGES+=(rtmpdump) && \
     KEPT_PACKAGES+=(zip) && \
     KEPT_PACKAGES+=(atomicparsley) && \
@@ -36,8 +37,6 @@ RUN set -x && \
         ${TEMP_PACKAGES[@]} \
         && \
     git config --global advice.detachedHead false && \
-    # Install required python modules
-    python3 -m pip install --no-cache-dir pyxattr && \
     # Install yt-dlp via pip
     python3 -m pip install --no-cache-dir --force-reinstall yt-dlp && \
     # Create /config directory
