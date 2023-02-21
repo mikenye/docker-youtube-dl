@@ -29,6 +29,7 @@ RUN set -x && \
     KEPT_PACKAGES+=(zip) && \
     KEPT_PACKAGES+=(atomicparsley) && \
     KEPT_PACKAGES+=(aria2) && \
+    KEPT_PACKAGES+=(adduser) && \
     # Install packages
     apt-get update -y && \
     apt-get install -y --no-install-recommends \
