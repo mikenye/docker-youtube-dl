@@ -13,6 +13,7 @@ RUN set -x && \
     TEMP_PACKAGES+=(git) && \
     TEMP_PACKAGES+=(make) && \
     TEMP_PACKAGES+=(pandoc) && \
+    TEMP_PACKAGES+=(curl) && \
     # Packages kept in the image
     KEPT_PACKAGES+=(bash) && \
     TEMP_PACKAGES+=(build-essential) && \
@@ -37,8 +38,9 @@ RUN set -x && \
         ${TEMP_PACKAGES[@]} \
         && \
     git config --global advice.detachedHead false && \
-    # Install yt-dlp via pip
-    python3 -m pip install --no-cache-dir --force-reinstall yt-dlp && \
+    # Install yt-dlp via curl
+    curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o /usr/local/bin/yt-dlp && \
+    chmod a+x /usr/local/bin/yt-dlp && \
     # Create /config directory
     mkdir -p /config && \
     # Clean-up
