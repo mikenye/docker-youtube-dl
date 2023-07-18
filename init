@@ -5,14 +5,14 @@ mkdir -p /home/dockeruser
 
 # Create symlinks for files/dirs under /config
 
-# if /config/youtube-dl.conf exists, symlink to /etc/youtube-dl.conf
-if [[ -e "/config/youtube-dl.conf" ]]; then
+# if /config/yt-dlp.conf exists, symlink to /etc/yt-dlp.conf
+if [[ -e "/config/yt-dlp.conf" ]]; then
     # if the symlink already exists, remove it
-    if [[ -L "/etc/youtube-dl.conf" ]]; then
-        rm -v "/etc/youtube-dl.conf"
+    if [[ -L "/etc/yt-dlp.conf" ]]; then
+        rm -v "/etc/yt-dlp.conf"
     fi
     # create symlink
-    ln -vs "/config/youtube-dl.conf" "/etc/youtube-dl.conf" > /dev/null 2>&1 || true
+    ln -vs "/config/yt-dlp.conf" "/etc/yt-dlp.conf" > /dev/null 2>&1 || true
 fi
 
 # if /config/.netrc exists, symlink to /home/dockeruser/.netrc
