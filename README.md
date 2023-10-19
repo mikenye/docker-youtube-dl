@@ -68,14 +68,14 @@ docker run \
     -e PGID=$(id -g) \
     -e PUID=$(id -u) \
     -v /path/to/downloaded/videos:/workdir:rw \
-    -v /path/to/youtube-dl.conf:/etc/youtube-dl.conf:ro \
+    -v /path/to/yt-dlp.conf:/etc/yt-dlp.conf:ro \ 
     ghcr.io/mikenye/docker-youtube-dl:latest
 ```
 
 Where:
 
 * `/path/to/downloaded/videos` is where youtube-dl will download videos to (use `"$(pwd)"` to downloade to current working directory.
-* `/path/to/youtube-dl.conf` is the path to your youtube-dl.conf file.
+* `/path/to/yt-dlp.conf` is the path to your yt-dlp.conf file.
 
 ## Authentication using `.netrc`
 
