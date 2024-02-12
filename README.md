@@ -74,7 +74,7 @@ docker run \
 
 Where:
 
-* `/path/to/downloaded/videos` is where youtube-dl will download videos to (use `"$(pwd)"` to downloade to current working directory.
+* `/path/to/downloaded/videos` is where youtube-dl will download videos to (use `"$(pwd)"` to download to current working directory.
 * `/path/to/yt-dlp.conf` is the path to your yt-dlp.conf file.
 
 ## Authentication using `.netrc`
